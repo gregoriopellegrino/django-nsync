@@ -70,6 +70,8 @@ class ObjectSelector:
 
     def get_by(self):
         def build_selector(match):
+            # replace => with __
+            match_field = match.replace(ModelAction.REFERRED_TO_DELIMITER, "__")
             return Q(**{match: self.fields[match]})
 
         # if no operators present, then just AND all of the match_ons
