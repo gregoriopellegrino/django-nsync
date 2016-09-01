@@ -4,6 +4,7 @@ from django.core.exceptions import (
     FieldDoesNotExist)
 from django.contrib.contenttypes.fields import ContentType
 from django.db.models.query_utils import Q
+from django.db import models
 from .models import ExternalKeyMapping
 from collections import defaultdict
 import logging
@@ -193,6 +194,8 @@ class ModelAction:
                     current_value = getattr(object, attribute, None)
                     if not (current_value is None or current_value is ''):
                         continue
+                if (type(field) is models.DateField or type(field) is models.DateTimeField) and value is '':
+                    value = None
                 setattr(object, attribute, value)
 
         for attribute, get_by in referential_attributes.items():
